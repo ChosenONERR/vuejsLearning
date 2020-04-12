@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    功能点：
+        1.搜索+过滤（数组循环遍历：forEach  filter  some findIndex ；push添加，splice移除）
+        2.时间处理（自定义过滤器）
+        3.刚进页面文本框焦点的获取
+        4.es6字符串新特性：字符串填充方法：String.prototype.padStart/padEnd
+        5.自定义按键修饰符
+        6.
+        7.钩子函数
+        8.自定义全局和私有指令
+-->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--引入css-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--引入vue-->
+    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">添加品牌</h3>
+        </div>
+        <!--form-inline样式保证该元素下的子元素都在一行之内-->
+        <div class="panel-body form-inline">
+            <label>
+                cId:
+                <input type="text" class="form-control" v-model="cId">
+            </label>
+            <label>
+                cName:
+                <input type="text" class="form-control" v-model="cName" @keyup.f4="add" >
+            </label>
+
+            <input type="button" value="添加" class="btn btn-primary" @click="add">
+        </div>
+        <hr>
+        <label>
+            cName搜索过滤
+            <input type="text" class="form-control" v-model="keyWords" v-focus v-color="'blue'">
+        </label>
+    </div>
+
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+        <tr>
+            <th>cId</th>
+            <th>cName</th>
+            <th>cTime</th>
+            <th>Operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="brand in search(keyWords)" :key="brand.cId">
+            <td v-text="brand.cId"></td>
+            <td v-text="brand.cName"></td>
+            <td>{{ brand.cTime | dateFormat('') }}</td>
+            <td>
+                <a href="" @click.prevent="del(brand.cId)">删除</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3 v-fontweight="1500" v-fontsize="'30px'">{{ msg }}</h3>
+</div>
+
+<script>
+
+    //定义全局过滤器
+    Vue.filter('dateFormat', function (dateStr, pattern = 'YYYY-MM-DD') {//此处传递默认值'YYYY-MM-DD'
+        //1. 根据时间字符串获取当时时间
+        var date = new Date(dateStr)
+        //2. 获取年月日
+        //es6中的字符串新方法：
+        // 字符串首部填充padStart(maxlength, fillString)//参数1：填充后字符串长度，参数2：填充物
+        // 字符串尾部填充padEnd(maxlength, fillString)//参数1：填充后字符串长度，参数2：填充物
+        var y = date.getFullYear()
+        var m = date.getMonth().toString().padStart(2, '0')
+        var d = date.getDate().toString().padStart(2, '0')//getDay()是获取星期
+
+        //3.返回 'yy-mm-dd'
+        // return y + '-' + m + '-' +d
+        //return `${y}-${m}-${d}`
+        if (pattern.toLowerCase() === 'yyyy-mm-dd') {
+            return `${y}-${m}-${d}`
+        } else {
+            //获取时分秒
+            var hh = date.getHours().toString().padStart(2, '0')
+            var mm = date.getMinutes().toString().padStart(2, '0')
+            var ss = date.getSeconds().toString().padStart(2, '0')
+
+            return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
+        }
+    })
+
+    //自定义全局按键修饰符（可以在网上查 js按键值对应关系，其中Enter按键对应13，f4按键对应115）
+    Vue.config.keyCodes.f4 = 115
+
+    //自定义全局指令 Vue.directives()
+    //参数1 是指令的名称，需要注意的是：定义的时候，指令的名称前面不需要加 v-前缀，但是使用的时候需要以v-开头
+    //参数2 是一个对象，这个对象包含该指令相关的生命周期函数（在特定的阶段，执行相关的操作）
+    //自定义指令：获取焦点
+    Vue.directive('focus', {
+        //在每一个生命周期函数中第一个桉树永远是el，表示被绑定了该指令的那个元素（这个el参数是原生的js对象）
+        //函数中还有一个参数：binding。他是一个对象，里面呢有许多值，可以去官网的开发文档查看（如binding.name指令的名字...）
+
+        //bind：在元素刚绑定了指令的时候执行（可以简单的理解为bind是在内存中的时候就执行了）【触发一次】
+        bind(el) {
+            //el.focus()//虽然在该阶段执行了focus方法，但是因为元素还没有插入到DOM中，所以没有用
+        },
+
+        //inserted 表示元素插入到DOM中的时候，会执行 inserted 函数（可以简单的理解为内存到页面的时候inserted就执行了）【触发一次】
+        inserted(el) {
+            //和js行为有关的操作，最好在inserted函数中写
+            el.focus()
+        },
+
+        //当VNode更新的时候，会执行updated，可能会出发多次
+        updated() {
+
+        }
+    })
+
+    //自定义指令：设置字体颜色
+    Vue.directive('color', {
+
+        bind(el, binding) {
+            //样式只要通过指令绑定到了元素，不管这个这个元素有没有插入（inserted）到页面上去，这个元素肯定有一个内联的样式
+            //将来元素肯定会显示到页面中去，这时候，浏览器的渲染引擎必然会解析样式，应用给这个元素
+            //el.style.color = 'red'
+
+            //第2个参数binding
+            console.log(binding.name)
+            console.log(binding.value)
+            console.log(binding.expression)
+            el.style.color = binding.value
+        }
+    })
+
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            cId: '',
+            cName: '',
+            keyWords: '',
+            msg:'hahahahahahahahhaha',
+            list: [
+                {cId: 1, cName: '雷克萨斯', cTime: new Date()},
+                {cId: 2, cName: '宝马', cTime: new Date()},
+                {cId: 3, cName: '奔驰', cTime: new Date()},
+                {cId: 4, cName: '丰田', cTime: new Date()}
+            ]
+        },
+        methods: {
+
+            //品牌添加
+            add() {
+                //1.创建 品牌对象
+                var car = {cId: this.cId, cName: this.cName, cTime: new Date()}
+                //2.添加到list中
+                this.list.push(car)
+                //3.添加成功后，清空文本框
+                this.cId = this.cName = '';
+            },
+            del(id) {
+                //循环遍历不采用foreach，因为我们希望找到之后立刻终止循环
+
+                /*//方式一：数组的some()方法：some是一个遍历方法，当箭头函数返回值是true时，终止循环。
+                // 其中，item是当前遍历到的元素，i是当前遍历元素的序号
+                this.list.some((item, i) =>{
+                    if(item.cId == id ){
+                        //数组的splice方法：第一个参数i：从第几个开始删除；第二个元素是删除几个元素
+                        this.list.splice(i, 1)
+                        return true
+                    }
+                })*/
+
+                //方式二：数组的findIndex()方法：findIndex也是一个遍历方法，当箭头函数返回值是true时，终止循环。
+                // 不同的是这个方法有返回值：返回的是当前元素的索引值
+                var index = this.list.findIndex(item => {
+                    if (item.cId == id) {
+                        return true
+                    }
+                })
+                this.list.splice(index, 1)
+            },
+            search(keywords) {
+                //1.定义新数组
+                var newList = []
+                //2.遍历数组，进行过滤
+                //2.1 因为遍历整个数组，所以可以采用forEach
+                /*this.list.forEach(item => {
+                    //字符串的indexOf()方法：A.indexOf(B)，若A包含B，则返回值不等于-1，否则等于-1
+                    console.log('哈哈哈哈'.indexOf(''))//输出为0，说明每一个字符串“都包含空字符串''”
+                    if(item.cName.indexOf(keywords) != -1){
+                        newList.push(item)
+                    }
+                })*/
+                //2.2 因为遍历整个数组，也可以采用filter
+                newList = this.list.filter(item => {
+                    //es6中，为字符串提供了一个新方法，叫做String.prototype.includes('被包含的字符串')，包含则返回true，不包含则返回false
+                    if (item.cName.includes(keywords)) {
+                        return item
+                    }
+                })
+                //3.返回新数组
+                return newList
+            }
+        },
+        //自定义私有过滤器
+        filters:{},
+        //自定义私有指令
+        directives: {
+            'fontweight': { //设置字体粗细
+                bind: function (el, binding) {
+                    console.log('fontweight')
+                    el.style.fontWeight = binding.value
+                }
+            },
+            //大多数情况下，我们可能只想使用bind 和 update钩子函数，并不像关心其他钩子函数，那么我可以使用简写（不写对象了）：
+            'fontsize': function (el, binding) {//这里的function的内容相当于同时写到了bind和update中去了
+                console.log('fontsize')
+                el.style.fontsize = parseInt(binding.value) + 'px'
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

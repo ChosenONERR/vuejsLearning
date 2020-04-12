@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--    过滤器：对原有数据进行加工处理再输出
+    1.过滤器的定义语法：
+        //无论全局还是私有，过滤器中的 function ，第一个参数，已经被规定死了，永远都是 管道符 | 前面 传递过来的数据
+        //1.全局
+        Vue.filter('过滤器名称',function(){})
+        //2.私有（见下面第三个Vue实例）
+    2.调用过滤器的格式：
+        {{ data | 过滤器1, 过滤器2, ... }}
+-->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app1">
+        <p>{{ msg | msgFormat('xiao', '123') | filterAgain }}</p>
+    </div>
+<!--    测试全局过滤器的作用范围-->
+    <div id="app2">
+        <p>{{ msg | msgFormat('xiao', '123') | filterAgain }}</p>
+    </div>
+<!--    测试私有过滤器-->
+    <div id="app3">
+        <p>{{ msg | msgFormat }}</p>
+    </div>
+<script>
+
+    //定义全局过滤器（全局：所有的Vue实例都可以共享）
+    Vue.filter('msgFormat', function (data, arg1, arg2) {
+        //这种方式只会替换一次
+        //return data.replace('大', '小')
+        //采用正则表达式（g表示全局匹配）
+        //return data.replace(/大/g,'小')
+        //采用传参的方式（参数的数量可以多个）
+        return data.replace(/大/g, arg1 + arg2)
+    })
+
+    //再定义多一个全局过滤器，一个数据可以一次调用多个过滤器
+    Vue.filter('filterAgain', function (data) {
+        return data + '============='
+    })
+
+    //Vue实例1====================================
+    let vm1 = new Vue({
+        el: '#app1',
+        data: {
+            msg: '大西瓜、大苹果、大雪梨、大橘子'
+        }
+    })
+
+    //Vue实例2====================================
+    let vm2 = new Vue({
+        el: '#app2',
+        data: {
+            msg: '大猪蹄子'
+        }
+    })
+
+    //Vue实例3====================================
+    let vm3 = new Vue({
+        el: '#app3',
+        data: {
+            msg: '大猪蹄子'
+        },
+        filters: {
+            //定义私有过滤器（私有：仅当前Vue实例享用）
+            //格式：过滤器名称:函数
+            msgFormat:function (data) { ////此处的私有过滤器 和 全局过滤器 的名字相同，但是过滤器的调用原则是：就近原则（优先私有）
+                return data + '++++++++++++++++++++'
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h3 id="h3">{{ msg }}</h3>
+        <input type="button" value="修改msg" title="触发beforeUpdate()" @click="msg='No'">
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'ok'
+            },
+            methods:{
+                show() {
+                    console.log('执行了show方法')
+                }
+            },
+            beforeCreate() {//这是生命周期中的第一个函数，表示实例完全被创建出来之前，会执行它
+                //console.log(this.msg)//测试data域数据
+                //console.log(this.show())//测试methods中的方法
+                //测试结果：在beforeCreate 生命周期函数执行的时候，data 和 methods 中的数据都还没有被初始化
+            },
+            created() {//这是生命周期中的第二个函数
+                //console.log(this.msg)//测试data域数据
+                //console.log(this.show())//测试methods中的方法
+                //测试结果：在created 生命周期函数执行的时候，data 和 methods 中的数据都已经被初始化完毕
+                //故想要【最早】调用data和methods中的是数据，只能在created中调用
+            },
+            beforeMount() {//这是生命周期中的第三个函数，表示模板已经在内存中编辑完成了，但是尚未把模板渲染（挂载）到页面中去
+                //console.log(document.getElementById('h3').innerText)
+                //测试结果：在 beforeMount 执行的时候，页面中的元素，还没有真正被替换过来（还在内存），页面中还是之前写的一些模板字符
+            },
+            mounted() {
+                //这是生命周期中的第4个函数，也是实例创建期间的最后一个生命周期函数。当执行完mounted表示实例已经被完全创建好了
+                //说明如果要通过某些插件操作页面上的DOM节点，最早要在mounted中进行
+                //console.log(document.getElementById('h3').innerText)
+                //测试结果：页面已完成渲染
+            },
+
+            //接下来进入到运行阶段
+            beforeUpdate(){
+                //console.log(document.getElementById('h3').innerText)//获取页面上显示的数据
+                //console.log(this.msg)
+                //测试结果：当执行 beforeUpdate 的时候（也就是data的数据发生改变的时候），页面中显示的数据仍然是“旧的”，还没随着data域的数据改变而发生改变
+            },
+            updated(){
+                //console.log(document.getElementById('h3').innerText)//获取页面上显示的数据
+                //console.log(this.msg)
+                //测试结果：updated 事件执行的时候，页面 和 data 数据已保持同步了
+            }
+        })
+    </script>
+</body>
+</html>

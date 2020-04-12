@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>第一个vue</title>
+    <!--1.引入vue-->
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <!--
+1、Vue 实现所控制的这个元素区域，就是我们的 V
+2、我们new出来的vue实例对象就是我们的 VM
+3、这里的data就是我们的 M
+-->
+</head>
+
+<body>
+<!--2.设置将要被渲染的区域-->
+    <div id="app">
+        <h1>{{ msg }}</h1>
+    </div>
+
+    <script>
+        // 3.实例化vue对象
+        // 绑定对象
+        //当我们导入包之后，在浏览器的内存中，就多了一个Vue构造函数
+        let vm = new Vue({
+            el:'#app',//el是element的缩写。指定 当前我们new的这个Vue实例要控制页面上的区域
+            data:{//data属性中，存放的是el中要用到的数据
+                msg:'hello vue.js'//通过Vue提供的指令，很方便的就能把数据渲染到页面上，不用再手动操作dom元素了【vue框架不提倡我们手动操作dom元素】
+            }
+        });
+        console.log(vm);
+
+    </script>
+</body>
+</html>

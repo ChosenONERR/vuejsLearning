@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id='app'>
+    <p>遍历普通数组（数组内的元素不是对象），有两个属性：value为元素值，index数组下标索引</p>
+    <p v-for="(value,index) in list1">元素值：{{value}} --- 索引：{{index}}</p><hr>
+
+    <p>遍历对象数组（数组内的元素是对象）</p>
+    <p v-for="item in list2">用户名：{{item.name}} --- 职业：{{item.job}}</p><hr>
+
+    <p>遍历对象，有三个属性：value为值，key为键，index为数组下标索引</p>
+    <p v-for="(value,key,index) in user">键：{{key}} --- 值：{{value}} --- 索引：{{index}}</p><hr>
+
+    <p>遍历数字</p>
+    <p v-for="value in 10">这是第：{{value}}个数字</p><hr>
+
+    <!--特殊：-->
+    <label>
+        id：
+        <input type="text" v-model="id">
+    </label>
+    <label>
+        name：
+        <input type="text" v-model="name">
+    </label>
+    <label>
+        job：
+        <input type="text" v-model="job">
+    </label>
+    <input type="button" value="添加" @click="addList2">
+    <!-- 在2.2.0+的版本里面，当在组件中使用v-for
+           必须指定key，注意两点：
+            1、因为key的值是变量，所以必须使用v-bind属性绑定的形式，指定key的值
+            2、key的值要唯一，且只能是number或者是string类型（且值是唯一的）
+    -->
+    <p v-for="item in list2" :key="item.id">
+        <input type="checkbox">
+        {{item.id}}---{{item.name}}---{{item.job}}
+    </p>
+</div>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            list1: [1, 2, 3, 4, 5, 6],
+            list2: [
+                {id: '1', name: '路飞', job: '船长'},
+                {id: '2', name: '索隆', job: '剑客'},
+                {id: '3', name: '山治', job: '厨师'},
+                {id: '4', name: '娜美', job: '航海士'}
+            ],
+            user: {
+                name: '小明',
+                age: '18',
+                job: 'student',
+                address: '中国',
+                sex: 'male'
+            },
+            id: '',
+            name: '',
+            job: ''
+        },
+        methods: {
+            addList2() {
+                //采用push方法不会出现问题
+                //this.list2.push({id: this.id, name: this.name, job: this.job})
+                //采用unshift方法，如果不指定id为key，则会出现问题
+                this.list2.unshift({id:this.id,name:this.name,job:this.job})
+            }
+        }
+    })
+</script>
+</body>
+</html>

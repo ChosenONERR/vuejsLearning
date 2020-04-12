@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- v-bind:是vue中提供绑定属性的指令（其实就是对标签中的属性值进行变量的绑定） -->
+        <!--v-on 事件绑定，为元素指定事件处理函数的时候，如果值加了小括号，就可以给函数传参了-->
+        <input type="button" value="按钮1" v-bind:title="msg">
+        <input type="button" value="按钮2" v-bind:title="msg" v-on:click="alert">
+        <input type="button" value="按钮3" :title="msg" @click="alert">
+        <!--v-bind在修改属性值的时候可以直接修改，不一定需要在data那里修改-->
+        <input type="button" value="按钮4" :title="msg + 'P.S.  v-bind在修改属性值的时候可以直接修改，不一定需要在data那里修改'">
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg:'我是bind指令'
+            },
+            methods:{//在js中，变量带s一般是一个数组，但这里比较特殊，这是一个对象
+                // 自定义事件
+                alert(){
+                    alert("hello 我是chosen 我在测试v-on指令")
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>

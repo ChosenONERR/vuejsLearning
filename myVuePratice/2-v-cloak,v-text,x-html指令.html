@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    -->
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <style>
+        <!--属性选择器-->
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+<!--    使用v-cloak可以解决插值表达式闪烁的问题-->
+    <p v-cloak>{{msg1}}</p>
+    <!-- 默认 v-text 是没有闪烁问题的 -->
+    <!--    v-text 和 插值表达式的比较
+            v-text会覆盖元素中原本的内容（也就是下面的+号将不会显现，而插值表达式只会替换自己的这个占位符，不会把整个元素的内容清空）
+    -->
+    <p v-text="msg1">======</p>
+    <p>==={{msg1}}===</p>
+
+    <!--v-html 能解析html标签-->
+    <p v-html="msg2"></p>
+    <!--    -->
+    <p v-text="msg2"></p>
+    <!--    -->
+    <p>{{msg2}}</p>
+</div>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                msg1:'hello vue.js',
+                msg2:'<h1>我这里有html标签h1，看看谁能解析我</h1>'
+            }
+        });
+    </script>
+
+</body>
+</html>

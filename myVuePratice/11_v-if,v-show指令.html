@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+两个指令的区别：
+    v-if的特点：每次都会重新删除或创建元素
+    v-show的特点：每次不会进行DOM的删除和创建，只是切换元素display:none样式
+    v-if有较高的切换性能消耗
+    v-show有较高的初始渲染消耗
+    如果元素涉及到频繁切换，最好不用v-if
+    如果元素可能永远不会被显示出来则推荐使用v-if
+ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <!--事件方法中若只有一天语句，那么只需要如下这样写就行了-->
+    <input type="button" value="toggle" @click="flag=!flag">
+
+    <p v-if="flag">这是v-if控制的元素</p>
+    <p v-show="flag">这是v-show控制的元素</p>
+
+</div>
+
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            flag: true
+        },
+        methods: {
+            toggle() {
+                this.flag = !this.flag
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

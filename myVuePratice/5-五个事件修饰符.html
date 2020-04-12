@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--
+    事件修饰符
+    .stop:阻止冒泡（所谓冒泡：“一层一层地往外冒泡”，假如外层元素和内层元素都有相同的触发事件，此时先触发内部，再触发外部。而倘若在内部元素使用了stop可以阻止外层的事件的触发）
+    .prevent:阻止默认事件
+    .capture:添加事件侦听器时使用事件捕获模式（和冒泡相反，若外部元素使用了.capture，则先触发外部元素）
+    .self:只当事件在该元素本身触发时触发回调（当前元素的事件的触发只能由当前元素触发，不能被动触发（不允许冒泡））
+    .once:事件只能触发一次
+    -->
+    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+
+    <style>
+        .inner{
+            width: 30%;
+            height: 150px;
+            background: dodgerblue;
+        }
+        .outer{
+            width: 50%;
+            height: 200px;
+            background: greenyellow;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <p>测试冒泡事件（未添加任何事件修饰符）</p>
+            <div @click="innerDivIncident" class="inner">
+                <input type="button" value="测试冒泡" @click="btnIncident">
+            </div>
+
+            <p>.stop修饰input，阻止div发生点击事件（.stop阻止冒泡）</p>
+            <div @click="innerDivIncident" class="inner">
+                <input type="button" value="防止冒泡1" @click.stop="btnIncident">
+            </div>
+
+            <p>.self修饰input，阻止div发生点击事件（）</p>
+            <div @click.self="innerDivIncident" class="inner">
+                <input type="button" value="防止冒泡2" @click="btnIncident">
+            </div>
+
+            <p>.self也和.stop一样具有阻止冒泡的功能，区别在于.self只阻止自身涉及到的冒泡，不会阻止所有的冒泡</p>
+            <div @click="outerDivIncident" class="outer">
+                <div @click="innerDivIncident.self" class="inner">
+                    <input type="button" value="测试两者区别" @click="btnIncident">
+                </div>
+            </div>
+
+            <p>.capture修饰div，当内部事件将要被触发时，让外部元素（div）先触发事件</p>
+            <div @click.capture="innerDivIncident" class="inner">
+                <input type="button" value="反冒泡" @click="btnIncident">
+            </div>
+
+            <p>.once让该事件只触发一次</p>
+            <div @click.once="innerDivIncident" class="inner">
+                <input type="button" value="once测试" @click="btnIncident">
+            </div>
+
+            <p>.prevent拒绝默认事件，如a标签的默认事件是点击的时候会发生页面跳转</p>
+            <a href="http://www.baidu.com" @click.prevent="linkIncident">带你去百度.prevent</a>
+            <br>
+            <a href="http://www.baidu.com" @click="linkIncident">带你去百度</a>
+        </div>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            methods:{
+                innerDivIncident(){
+                    console.log("触发了设置在innerDiv元素的点击事件")
+                },
+                btnIncident(){
+                    console.log("触发了设置在input元素的点击事件")
+                },
+                linkIncident(){
+                    console.log("触发了设置在a元素的点击事件")
+                },
+                outerDivIncident(){
+                    console.log("触发了设置在outerDiv元素的点击事件")
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>
