@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    引入vue.js-->
+    <script src="../node_modules/vue/dist/vue.js"></script>
+<!--    引入animate.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+</head>
+<body>
+
+<div id="app">
+
+    <input type="button" value="toggle" @click="flag = !flag">
+<!--    最基本：-->
+<!--    <transition enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">-->
+<!--        <h3 v-if="flag">这是一个h3</h3>-->
+<!--    </transition>-->
+
+<!--    把animated写在被包裹的元素标签内-->
+<!--    <transition enter-active-class="bounceIn" leave-active-class="bounceOut">-->
+<!--        <h3 v-if="flag" class="animated">这是一个h3</h3>-->
+<!--    </transition>-->
+
+<!--    使用 :duration="毫秒值" 来统一设置 入场 和 离场 时候的动画时常-->
+<!--    <transition enter-active-class="bounceIn" leave-active-class="bounceOut" :duration="200">-->
+<!--        <h3 v-if="flag" class="animated">这是一个h3</h3>-->
+<!--    </transition>-->
+
+<!--    使用:duration="{ enter:200, leave: 400 } 分别设置 入场时长 和 离场时长-->
+    <transition enter-active-class="bounceIn" leave-active-class="bounceOut" :duration="{ enter:200, leave: 400 }">
+        <h3 v-if="flag" class="animated">这是一个h3</h3>
+    </transition>
+
+</div>
+
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            flag: false,
+            flag2: false
+        },
+        methods: {}
+    })
+</script>
+
+</body>
+</html>

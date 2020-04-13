@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--引入vue.js-->
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <style>
+        .ball {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <input type="button" value="小球动起来" @click="flag=!flag">
+    <!-- 使用 transition 元素把小球包裹起来 -->
+    <!-- 动画入场时候的三个生命周期函数：beforeEnter enter afterEnter  -->
+    <transition
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @after-enter="afterEnter">
+
+        <div class="ball" v-if="flag"></div>
+
+    </transition>
+
+</div>
+
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            flag: false
+        },
+        methods: {
+            //动画钩子函数，第一个参数el，表示 要执行动画的那个DOM元素（是原生的js DOM对象）
+
+            beforeEnter(el){ //表示动画入场之前。此时动画尚未开始，可以在此函数中设置元素开始动画之前的起始样式
+                //设置小球开始动画前的起始位置
+                el.style.transform = "translate(0, 0)" // 位置
+            },
+            enter(el, done){ // 表示动画开始之后。可以在此函数设置元素的完成动画之后结束状态（设置动画开始之后的样式）
+                el.offsetWidth //这句话没有实际的作用。但是如果不写，就没有“过渡效果”（可以认为该语句会强制动画刷新）
+
+                el.style.transform = "translate(150px, 450px)" // 位置
+                el.style.transition = "all 1s ease" // 时间
+
+                //这里的done()函数，其实就是 afterEnter()这个函数。也就是说 done()是 afterEnter() 的引用
+                done() // 这样就保证了小球的立即消失
+            },
+            afterEnter(el){ // 表示动画完成之后
+                console.log('ok')
+                //我们希望动完成之后 小球立即消失
+                this.flag = ! this.flag
+            }
+        }
+    })
+</script>
+</body>
+</html>
