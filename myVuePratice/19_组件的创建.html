@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    什么是组件？
+    组件的出现，就是为了拆分Vue实例的代码量，能够让我们以不同的组件，来划分不同的功能模块，
+    将来我们需要什么样的功能，就可以去调用对应的组件即可。
+    >模块化：是将代码逻辑的角度进行划分的。方便代码分层开发，保证每次功能模块的职能单一。
+    >组件化：是从UI界面的角度进行划分的，前端的组件化，方便UI组件的重复调用。
+ -->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<template id="temp1">
+<!--    这种方式还是得遵循 只有一个根元素的原则-->
+    <div>
+        <h3>这是通过 template 元素，在外部定义的组件结构。这个方式不用在字符串里面写代码，这种方式有代码提示</h3>
+        <h4>推荐使用这种</h4>
+    </div>
+</template>
+
+<template id="temp2">
+    <h3>我是私有组件</h3>
+</template>
+
+<div id="app">
+    <!-- 使用组件：把组件的名称，以HTML标签的形式引入到页面中即可-->
+
+    <!-- 驼峰命名法时   -->
+    <!--<my-com1></my-com1>-->
+
+    <!--非驼峰命名法时-->
+    <mycom1></mycom1>
+    <hr>
+    <mycom2></mycom2>
+    <hr>
+    <mycom3></mycom3>
+    <hr>
+    <mycom4></mycom4>
+</div>
+
+<script>
+    // 创建【全局】的Vue组件 ==========================================================================
+    //补充：无论是哪一种创建方式，组件中的 template 属性指向的模板内容，必须有且只有唯一的一个根元素
+
+    // 1. 使用 Vue.extend 方式
+    // 1.1 创建组件模板对象 格式：Vue.extend
+   /* var com1 = Vue.extend({
+        template: '<h3>这是使用 Vue.extend 创建的组件</h3>'
+    })*/
+    // 1.2 创建Vue组件  格式：Vue.component('组件的名称', 创建出来的组件模板对象)
+    // 1.2.1 若组件名称采用驼峰命名法，则使用组件的时候，需要把 大写的驼峰改为小写的字母 同时 两个单词之间使用 - 连接
+    //Vue.component('myCom1', com1)
+    // 1.2.2 若组件名称采用非驼峰命名法（全小写），则使用组件的时候直接调用名称即可
+    // Vue.component('mycom1', com1)
+
+    //上述两步合成一步
+    Vue.component('mycom1', Vue.extend({
+        template: '<h3>这是使用 Vue.extend 创建的组件</h3>'
+    }))
+
+    Vue.component('mycom2', {
+        template: '<div><h3>这是直接使用 Vue.component 创建出来的组件</h3><span> 我是和 h3平级的元素标签</span></div>'
+    })
+
+    Vue.component('mycom3', {
+        template:'#temp1'
+    })
+
+
+    //Vue实例
+    let vm = new Vue({
+        el: '#app',
+        data:{
+
+        },
+        components:{
+            mycom4:{
+                template:'#temp2'
+            }
+        }
+    })
+</script>
+</body>
+</html>

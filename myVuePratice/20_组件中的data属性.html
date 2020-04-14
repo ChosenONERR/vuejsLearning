@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <mycom></mycom>
+</div>
+<script>
+    //定义全局组件
+    Vue.component('mycom', {
+        template:'<h3>这是全局组件 ---{{msg}}</h3>',
+        //组件中的data属性
+        // 1. 组件可以有自己的 data 数据
+        // 2. 组件的 data 和实例的 data 有点不一样，实例中的 data可以为一个对象，但是组件中的data必须是一个方法
+        // 3. 组件中的 data 除了必须为一个方法外，这个方法内部还必须返回一个对象才行
+        // 4. 组件中的 data 数据，使用方式和Vue实例的 data 使用方式一样
+        data: function () {
+            return{ //注意：此处返回一个对象，最好就如下这样写，不要自己在组件外部自己定义一个对象然后返回（只有这样，在调用组件的时候数据才不会共享）
+                msg:'这是组件中data属性定义的数据',
+            }
+        },
+        methods:{ // 这个对象内部还可以有方法属性
+
+        }
+    })
+
+    //Vue实例
+    let vm = new Vue({
+        el: '#app',
+        data:{
+
+        },
+        components:{
+            mycom4:{
+                template:'#temp2', // template属性
+                data:function () { //data属性
+                    return{
+
+                    }
+                },
+                methods: { //methods属性
+
+                },
+                directives:{ //directives属性
+
+                },
+                filters:{ //filters属性
+
+                },
+                components:{ // components属性
+
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

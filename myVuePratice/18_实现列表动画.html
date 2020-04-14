@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <style>
+        /* dashed 是虚线 margin是边距 line-height是行高*/
+        li{
+            border: 1px dashed #999;
+            margin: 5px;
+            line-height: 35px;
+            padding-left: 5px;
+            font-size: 15px;
+            width: 100%;
+        }
+
+        li:hover{
+            background-color: blueviolet;
+            transition: all 0.8s ease;
+        }
+
+        .v-enter,
+        .v-leave-to{
+            opacity: 0;
+            transform: translateY(80px);
+        }
+
+        .v-enter-active,
+        .v-leave-active{
+            transition: all 0.6s ease;
+        }
+
+        /*===================== 我们希望在删除的时候，被删除元素在离开的时候，未删除元素也能随着她的离开往上移*/
+        /* 下面的 .v-move 和 .v-leave-active 配合使用，能够实现列表后续的效果，删除元素后其他元素渐渐地飘上来的效果 */
+
+        /* v-move可以设置元素位移时候的效果 */
+        .v-move{
+            /* 渐变 */
+            transition: all, 0.6s ease;
+        }
+        .v-leave-active{
+            /* absolute会默认宽度变得很小，所以我们需要在li样式中设置宽度width为100% */
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <label>
+        id：
+        <input type="text" v-model="id">
+    </label>
+
+    <label>
+        name：
+        <input type="text" v-model="name">
+    </label>
+
+    <label>
+        job：
+        <input type="text" v-model="job">
+    </label>
+
+    <input type="button" value="添加" @click="add">
+
+<!--<ul>-->
+    <!-- 在实现列表过度的时候。如果需要过度元素是通过v-for渲染出来的，则不能使用 transition 包裹
+         需要使用transitionGroup -->
+    <!-- 给 transition-group 添加 appear 属性，实现页面刚展示出来时候的效果 -->
+    <!-- 通过 tag 属性 指定 transition-group 将来要渲染出的元素（不指定则默认是span）   -->
+        <transition-group appear tag="ul">
+            <li v-for="(user ,i) in list" :key="user.id" @click="del(i)">
+                {{ user.id }} --- {{ user.name }} -- {{ user.job }}
+            </li>
+        </transition-group>
+<!--</ul>-->
+</div>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        id:'',
+        name:'',
+        job:'',
+        data: {
+            list: [
+                {id: '1', name: '路飞', job: '船长'},
+                {id: '2', name: '索隆', job: '剑客'},
+                {id: '3', name: '山治', job: '厨师'},
+                {id: '4', name: '娜美', job: '航海士'}
+            ]
+        },
+        methods: {
+            add() {
+                this.list.push({id:this.id, name:this.name, job:this.job})
+                this.id = this.name = this.job = ''
+            },
+            del(i){
+                this.list.splice(i, 1)
+            }
+        }
+    })
+</script>
+</body>
+</html>

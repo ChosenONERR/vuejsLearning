@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <style>
+        .v-enter,
+        .v-leave-to{
+            opacity: 0;
+            transform: translateY(80px);
+        }
+
+        .v-enter-active,
+        .v-leave-active{
+            transition: all 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+<!--    注意：要用字符串表示register和login！！！ -->
+    <a href="" @click.prevent="comName='register'">注册</a>
+    <a href="" @click.prevent="comName='login'">登录</a>
+
+<!--mode模式。out-in表示元素先出去再进来，不要元素还未出去，其他元素就进来-->
+    <transition mode="out-in">
+        <!--    component是一个占位符，:is属性可以用来指定要展示的组件的名称-->
+        <component :is="comName"></component>
+    </transition>
+</div>
+
+<script>
+    //定义 登录 组件
+    Vue.component('login', {
+        template:'<h3>这是登录组件</h3>'
+    })
+    //定义 注册 组件
+    Vue.component('register', {
+        template:'<h3>这是注册组件</h3>'
+    })
+
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            comName:'login'
+        }
+    })
+</script>
+</body>
+</html>

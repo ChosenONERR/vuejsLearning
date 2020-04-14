@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="button" value="注册" @click="flag=false">
+    <input type="button" value="登录" @click="flag=true">
+
+    <login v-if="flag"></login>
+    <register v-else="flag"></register>
+</div>
+<script>
+    //定义 登录 组件
+    Vue.component('login', {
+        template:'<h3>这是登录组件</h3>'
+    })
+    //定义 注册 组件
+    Vue.component('register', {
+        template:'<h3>这是注册组件</h3>'
+    })
+
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            flag:false
+        }
+    })
+</script>
+
+</body>
+</html>

@@ -53,10 +53,15 @@
                 //这里的done()函数，其实就是 afterEnter()这个函数。也就是说 done()是 afterEnter() 的引用
                 done() // 这样就保证了小球的立即消失
             },
-            afterEnter(el){ // 表示动画完成之后
+            enter(el){ // 表示动画完成之后
                 console.log('ok')
-                //我们希望动完成之后 小球立即消失
+                //beforeEnter、enter、enter 这三个事件，是动画的前半场事件，前半场flag的变化是：false -> true。
+                // 正常来说整场动画应该是 false -> true -> false
+                //这句话，第一个功能：希望小球在“前半场”动画结束之后消失；
+                // 第二个功能：直接跳过后半场动画，让flag标识符直接变为false
+                //所以我们第二次点击小球的时候 flag： false -> true（仍然执行的是动画的前半场）
                 this.flag = ! this.flag
+                // el.style.opacity = 0 //这种方式需要写完后半场动画
             }
         }
     })
