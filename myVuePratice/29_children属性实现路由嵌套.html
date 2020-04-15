@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <router-link to="/account">账户</router-link>
+    <router-view></router-view>
+</div>
+
+<!-- 账户组件的内容 -->
+<template id="temp1">
+    <div>
+        <h1>账户组件</h1>
+        <!-- 此处要写好/account（因为我们下面path属性没有'/'，所以均从父组件那里开始请求） -->
+        <router-link to="/account/login">登录</router-link>
+        <router-link to="/account/register">注册</router-link>
+        <router-view></router-view>
+    </div>
+</template>
+
+<!-- 登录组件的内容 -->
+<template id="temp2">
+    <h3>登录组件</h3>
+</template>
+
+<!-- 注册组件的内容 -->
+<template id="temp3">
+    <h3>注册组件</h3>
+</template>
+
+<script>
+
+    // 定义 注册组件
+    var account = {
+        template: '#temp1'
+    }
+
+    // 定义 登录组件
+    var login = {
+        template: '#temp2'
+    }
+
+    // 定义 账户组件
+    var register = {
+        template: '#temp3'
+    }
+
+    // 定义路由
+    var routerObj = new VueRouter({
+        routes: [
+            {
+                path: '/account',
+                component: account,
+                children: [
+                    //注意，此处的path属性的值不要带'/',如'/login'，否则永远以根路径/开始请求，这样不方便用户去理解url地址
+                    {path: 'login', component: login},
+                    {path: 'register', component: register}
+                ]
+            }
+            // 路由方式切换组件不该这么写，否则会替换掉account组件，这样就没办法同时显现account组件和登录或注册组件
+            //{path: '/account/login', component: com2},
+            //{path: '/account/register', component: com3}
+        ]
+    })
+
+    // 创建Vue实例 vm
+    let vm = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        components: {},
+        router: routerObj //把路由对象，注册到Vue实例上，用来监听 url地址的变化，然后展示对应的组件
+    })
+</script>
+
+</body>
+</html>

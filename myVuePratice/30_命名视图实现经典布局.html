@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue-router/dist/vue-router.js"></script>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: orange;
+            height: 80px;
+        }
+
+        h1 {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .container {
+            display: flex;
+            height: 600px;
+        }
+
+        .left {
+            background-color: lightgreen;
+            flex: 2;
+        }
+
+        .main {
+            background-color: lightpink;
+            flex: 8;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <!-- 命名视图：通过命名的方式设置组件放置的位置-->
+    <!-- name属性没有，则为default -->
+    <router-view></router-view>
+    <div class="container">
+    <!-- 此处的name属性的值是字符串（只有:name的时候才要考考虑是值还是字符串），这里没有:，那么""内就一定是字符串，不用自添''了-->
+        <router-view name="left"></router-view>
+        <router-view name="main"></router-view>
+    </div>
+</div>
+
+<template id="temp1">
+    <h1 class="header">这是header</h1>
+</template>
+<template id="temp2">
+    <h1 class="left">这是leftBox</h1>
+</template>
+<template id="temp3">
+    <h1 class="main">这是mainBox</h1>
+</template>
+
+<script>
+
+    //定义导航栏组件header
+    var header = {
+        template: '#temp1'
+    }
+    //定义侧边栏组件leftBox
+    var leftBox = {
+        template: '#temp2'
+    }
+    //定义主体组件mainBox
+    var mainBox = {
+        template: '#temp3'
+    }
+
+    //定义路由
+    var routerObj = new VueRouter({
+        routes: [
+            {
+                path: '/', components: {
+                    //对组件进行命名（其实可以写成default:header，系统会自动帮忙加上单引号）
+                    default: header,
+                    'left': leftBox,
+                    'main': mainBox
+                }
+            }
+        ]
+    })
+
+    // 创建Vue实例 vm
+    let vm = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        components: {},
+        router: routerObj //把路由对象，注册到Vue实例上，用来监听 url地址的变化，然后展示对应的组件
+    })
+</script>
+
+</body>
+</html>

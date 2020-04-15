@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 本案例说明父子组件如何相互传递数据，稍微总结一下：
+    父组件传递 data 给子组件，关键在于 props属性
+    子组件传递 data 给父组件，关键在于：子组件调用父组件传递过来的方法（$emit）过程中通过传参的方式变相传递给父组件
+        （子组件在调用父组件的方法的过程中，把自己data数据通过方法传参的方式传递给父组件，父组件在自己的方法中获得子组件
+        的数据，再通过自己方法的逻辑来操作自己的data数据，从而实现子组件data向父组件data传值的过程）
+-->
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+    <!--父组件，可以在引用子组件的时候，
+        1. 当父组件需要传递 data数据 给子组件的时候，可以通过属性绑定 v-bind 的形式传递到子组件中
+        2. 当父组件需要传递 methods方法 给子组件的时候，可以通过事件绑定 v-on 的形式传递到子组件中(可简写为@func="show")
+         ps: 方法show不可以写成show()，带括号表示先调用show()方法把结果传给func；而不带括号则表示直接把show()方法给到func-->
+    <com1 v-bind:parentmsg="msg" v-on:func="show"></com1>
+</div>
+<template id="temp">
+    <div>
+        <h3>测试父组件向子组件传递数据：此处 h3 是子组件 --- {{ parentmsg }}</h3>
+        <hr>
+        <input type="button" value="这是子组件中的按钮--请点击它，触发父组件传递过来的func方法" @click="myclick">
+    </div>
+</template>
+<script>
+
+    //定义vm的子组件
+    var com1 = {
+        //子组件是无法直接访问到父组件的数据的，需要用到props属性
+        data: function () { //注意，子组件中的 data 数据，并不是通过 父组件 传过来的，而是子组件自身私有的，比如子组件通过ajax请求会的数据就可以放到自身的data上
+            return {
+                ziArg1:'我是子组件数据1',
+                ziArg2:'我是组组件数据2'
+            }
+        },
+        methods:{
+            myclick(){
+                // 我们希望通过 子组件的事件方法 调用 父组件传递过来的事件方法，可以通过 emit，其原意是触发、调用、发射的意思
+                // 1. 此处方法的传参可以是多个，有多少个写多少个
+                // 2. 此处参数的数据可以来源于子组件（故相当于变相的从子组件向父组件传递data）
+                this.$emit('func', this.ziArg1, this.ziArg2)
+            }
+        },
+        template: '#temp',
+        //组件中的props中的数据都是父组件传递给子组件的（只读，无法重新赋值）
+        props: ['parentmsg']//把父组件传递过来的parentMsg 属性，先在props数组中定义，然后才能使用这个数据
+    }
+
+    //定义Vue实例vm
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            msg: '我是父组件的数据',
+            dataFromSon:''
+        },
+        methods:{
+            show(arg1, arg2) {
+                console.log('调用了父组件的show方法，并拿到了子组件的data域数据：' + arg1 + '---' + arg2)
+                this.dataFromSon = arg1 + '---'+ arg2 //相当于变相子组件向父组件传递数据
+                console.log('父组件的dataFromSon数据变成了：' + this.dataFromSon)
+            }
+        },
+        components: {
+            //子组件（es6新写法，实际为：com1: com1）
+            com1
+        }
+    })
+</script>
+</body>
+</html>

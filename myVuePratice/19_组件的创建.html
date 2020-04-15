@@ -14,14 +14,15 @@
 </head>
 <body>
 
+<!--template标签的形式：
+        1.这种方式还是得遵循 只有一个根元素的原则
+        2.template标签定义在Vue渲染区域的外部（id为app的div标签外部）-->
 <template id="temp1">
-<!--    这种方式还是得遵循 只有一个根元素的原则-->
     <div>
         <h3>这是通过 template 元素，在外部定义的组件结构。这个方式不用在字符串里面写代码，这种方式有代码提示</h3>
         <h4>推荐使用这种</h4>
     </div>
 </template>
-
 <template id="temp2">
     <h3>我是私有组件</h3>
 </template>
@@ -78,6 +79,7 @@
 
         },
         components:{
+            // 子（私有）组件只有在这里注册了才可以使用，切记勿忘
             mycom4:{
                 template:'#temp2'
             }

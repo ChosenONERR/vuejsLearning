@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--引入css-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!--引入vue-->
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<template id="temp1">
+    <div>
+        <div class="form-group">
+            <label>评论人：</label>
+            <input type="text" class="form-control" v-model="name">
+        </div>
+
+        <div class="form-group">
+            <label>评论内容：</label>
+            <textarea class="form-control" v-model="content"></textarea>
+        </div>
+
+        <div class="form-group">
+            <input type="button" value="发表评论" class="btn btn-primary"
+                   @click="postcontent">
+        </div>
+    </div>
+</template>
+
+<div id="app">
+
+    <!--父组件把自己的方法loadComments传递给子组件-->
+    <com1 v-on:func="loadComments"></com1>
+
+    <ul class="list-group">
+        <li class="list-group-item" v-for="(item , i) in list" :key="item.id">
+            <span class="badge">评论人：{{ item.name }}</span>
+            {{ item.content }}
+        </li>
+    </ul>
+
+</div>
+
+<script>
+    //定义子组件com1
+    var com1 = {
+        template: '#temp1',
+        data: function () {
+            return {
+                name: '',
+                content: ''
+            }
+        },
+        methods: {
+            postcontent() {
+                // 1.先组织出一个“最新的”评论数据对象
+                var comment = {id: Date.now(), name: this.name, content: this.content}
+                // 2.我们打算把评论数据存放到localStorage中
+                // 2.1 先从localStorage中获取先前的评论数据，把它转换成一个数组对象（String --> []）
+                var list = JSON.parse(localStorage.getItem('cmts') || '[]') // JSON.psrse()不可以处理空(undefined)类型
+                // 2.2 把最新的评论数据unshift到这个数组
+                list.unshift(comment)
+                // 2.3 把这个最新的数组转换成String
+                var listStr = JSON.stringify(list);
+                // 2.4 把这个字符串数组存入到localStorage中
+                localStorage.setItem('cmts', listStr)
+                // 3. 清空输入框
+                this.name = this.content = ''
+                // 4. 刷新评论列表（重新加载评论列表上的数据）
+                this.$emit('func')
+            }
+        }
+    }
+
+    //定义Vue实例vm
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            list: [
+                //假数据
+                {id: Date.now(), name: '小明', content: '我是小明'},
+                {id: Date.now(), name: '小花', content: '我是小花'},
+                {id: Date.now(), name: '小梁', content: '我是小梁'},
+            ]
+        },
+        beforeCreate(){},
+        created(){
+            this.loadComments()
+        },
+        methods: {
+            loadComments() {
+                // 从localStorage中加载数据
+                this.list = JSON.parse(localStorage.getItem('cmts') || '[]')
+            }
+        },
+        components: {
+            com1
+        }
+    })
+</script>
+</body>
+</html>

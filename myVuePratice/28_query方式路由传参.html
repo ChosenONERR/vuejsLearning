@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue-router/dist/vue-router.js"></script>
+    <style>
+        .v-enter,
+        .v-leave-to {
+            opacity: 0;
+            transform: translateY(80px);
+        }
+
+        .v-enter-active,
+        .v-leave-active {
+            transition: all 0.6s ease;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <!-- 如果在路由中，使用查询字符串给路由传递参数（可以传递多个），则不需要修改路由规则对象的path属性 -->
+    <router-link to="/com1?id=10&name=xiaoming">query路由传参</router-link>
+
+    <transition mode="out-in">
+        <router-view></router-view>
+    </transition>
+</div>
+
+
+<template id="temp">
+
+    <!-- this 可省略 -->
+    <h1>这是使用路由来传递的参数---{{ this.$route.query.id }} --- {{ this.$route.query.name }}</h1>
+</template>
+<script>
+
+
+    var com1 = {
+        template: '#temp',
+        created() { //组件也有生命周期钩子函数
+            //查看this.$route对象内部都包含什么。查看工作台可知该对象内部含有query这个属性，这个属性是一个对象，包含传递的参数
+            //console.log(this.$route)
+            console.log(this.$route.query.id)
+        }
+    }
+
+    // 创建一个路由对象（当导入 Vue-router包之后，在 window全局对象中，就有了一个 路由的构造函数，叫做VueRouter）
+    var routerObj = new VueRouter({
+        // routes 数组中的每一个 route对象 表示【路由规则】
+        routes: [
+            {path: '/com1', component: com1}
+        ]
+
+    })
+
+    // 创建Vue实例 vm
+    let vm = new Vue({
+        el: '#app',
+        data: {},
+        methods: {},
+        components: {},
+        router: routerObj //把路由对象，注册到Vue实例上，用来监听 url地址的变化，然后展示对应的组件
+    })
+</script>
+</body>
+</html>
