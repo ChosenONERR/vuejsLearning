@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    此处不推荐直接在每个页面上面引入任何包和css文件（这样会导致每个页面都有多次二次ajax请求），而是只引入一个包含了所有的main.js文件-->
+<!--发现浏览器不能直接解析main.js，因为该文件中的代码涉及到了es6中的新语法，浏览器不识别-->
+<!--<script src="./main.js"></script>-->
+<!--通过前端构建工具webpack，把 main.js 做了一下处理，生成了一个 bundle.js 文件-->
+<!--<script src="../dist/bundle.js"></script>-->
+<!--    当使用了 webpack-dev-server 后，引入bundle.js 则在根目录下引用：-->
+    <script src="/bundle.js"></script>
+</head>
+<body>
+    <ul>
+        <li>这是第1个li</li>
+        <li>这是第2个li</li>
+        <li>这是第3个li</li>
+        <li>这是第4个li</li>
+        <li>这是第5个li</li>
+        <li>这是第6个li</li>
+        <li>这是第7个li</li>
+        <li>这是第8个li</li>
+        <li>这是第9个li</li>
+        <li>这是第10个li</li>
+    </ul>
+</body>
+</html>

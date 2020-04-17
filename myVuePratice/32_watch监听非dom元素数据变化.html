@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue-router/dist/vue-router.js"></script>
+</head>
+<body>
+<div id="app">
+    <router-link to="/login">登录</router-link>
+    <router-link to="register">注册</router-link>
+    <router-view></router-view>
+</div>
+<script>
+    // 定义登录组件模板实例
+    var login = {
+        template: '<h3>登录</h3>'
+    }
+
+    // 定义注册逐渐模板实例
+    var register = {
+        template: '<h3>注册</h3>'
+    }
+
+    // 定义路由实例
+    var routerObj = new VueRouter({
+        routes: [
+            {path: '/login', component: login},
+            {path: '/register', component: register}
+        ]
+    })
+    // 定义Vue实例
+    let vm = new Vue({
+        el: '#app',
+        data: {},
+        components: {},
+        router: routerObj,
+        watch:{ // watch的强项在于它能监听非 dom元素
+            '$route.path':function (newVal, oldVal) {
+                if(newVal === '/login'){
+                    console.log('欢迎来到登录页面')
+                }else if(newVal === '/register'){
+                    console.log('欢迎来到注册页面')
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

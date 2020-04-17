@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <input type="text" v-model="firstName"> +
+    <input type="text" v-model="lastName"> =
+    <input type="text" v-model="fullName">
+
+    <p>{{ fullName }}</p>
+    <p>{{ fullName }}</p>
+    <p>{{ fullName }}</p>
+</div>
+
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            firstName:'',
+            lastName:''
+            //fullName:''
+        },
+        methods:{
+
+        },
+        // watch:{ // 使用这个属性，可以监视 data 中指定数据的变化，然后触发这个watch中data对应的函数
+        //     // 这里的数据如果是first-name，则要写成'first-name':function(){}
+        //     firstName:function (newVal, oldVal) { // 两个特殊参数，顾名思义
+        //         this.fullName = newVal + '-' +  this.lastName
+        //     },
+        //     // 这里的数据也可用''包括
+        //     'lastName':function (newVal, oldVal) {
+        //         this.fullName = this.firstName + '-' + newVal
+        //     }
+        // }
+        computed:{
+            // 1. 在 computed 中，可以定义一些属性，这些属性可以叫做"计算属性".
+            // 2. 计算属性的本质就是一个方法。但是我们在使用计算属性的时候并没由把它当作一个方法，而是直接当作属性来调用。也就是：在引用的时候，不要加上()，
+            // 3. 只要computed中的计算属性中的内部数据（function中的内部数据）发生了变化，计算属性的值就会被重新计算
+            // 4. 计算属性的每次求值结果，都会被缓存起来，只要数据没变，每次调用该计算属性的时候都从缓存中拿；数据改变则从新计算
+            'fullName':function () {
+                console.log('ok')
+                return this.firstName + '-' + this.lastName
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
