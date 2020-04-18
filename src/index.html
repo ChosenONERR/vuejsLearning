@@ -8,8 +8,12 @@
 <!--<script src="./main.js"></script>-->
 <!--通过前端构建工具webpack，把 main.js 做了一下处理，生成了一个 bundle.js 文件-->
 <!--<script src="../dist/bundle.js"></script>-->
-<!--    当使用了 webpack-dev-server 后，引入bundle.js 则在根目录下引用：-->
-    <script src="/bundle.js"></script>
+<!--当使用了 webpack-dev-server 后，引入bundle.js 则在根目录下引用：-->
+<!--<script src="/bundle.js"></script>-->
+
+<!--
+当使用了 html-web-plugin 这个插件之后，我们不再需要手动处理 bundle.js的引用路径了，
+插件自动帮我们引入内存中的bundle.js（通过查看html代码可知其使用了一个script标签引用了正确的路径）-->
 </head>
 <body>
     <ul>
@@ -24,5 +28,8 @@
         <li>这是第9个li</li>
         <li>这是第10个li</li>
     </ul>
+
+    <div class="box1"></div>
+    <div class="box2"></div>
 </body>
 </html>

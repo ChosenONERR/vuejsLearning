@@ -1,0 +1,25 @@
+html, body{
+  margin: 0;
+  padding: 0;
+
+  li{
+    font-size: 12px;
+    line-height: 30px;
+  }
+
+  .box1{
+    width: 220px;
+    height: 120px;
+    // 默认情况下，webpack无法处理 css文件中的 url地址，不管是图片还是字体库，只要是url地址都处理不了
+    // （需要第三方的loader：url-loader  同时该url-loader 还依赖 file-loader，这个loader是内部依赖，不需要卸载webpack配置文件中）
+    background: url("../images1/kingJames.jpg");
+    background-size: cover;
+  }
+
+  .box2{
+    width: 220px;
+    height: 120px;
+    background: url("../images2/kingJames.jpg");
+    background-size: cover;
+  }
+}
