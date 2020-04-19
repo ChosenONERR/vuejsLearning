@@ -11,6 +11,9 @@ const webpack = require('webpack')
 // 2. 自动把打包好的、在内存中的bundle.js 追加到内存中去
 const htmlWebpackPlugin = require('html-webpack-plugin') // ps：只要是插件都要放到 plugins 数组里面去
 
+// vue-loader解析.vue文件需要这一步（然后还得在 plugin中new 该对象）
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 
 // 该配置文件是一个 .js文件，可以通过 Node 中的模块操作向外暴露一个 “配置对象”
 
@@ -41,11 +44,15 @@ module.exports = {
         hot: true // 启用热更新的 第 1 步
     },
     plugins: [ // 该节点用于配置插件
-        new webpack.HotModuleReplacementPlugin(), // new 一个热更新的 模块对象，这是启用热更新的第 3 步
-        new htmlWebpackPlugin({ // 创建一个 可以在内存中生成 html页面 的插件
+        // new 一个热更新的 模块对象，这是启用热更新的第 3 步
+        new webpack.HotModuleReplacementPlugin(),
+        // 创建一个 可以在内存中生成 html页面 的插件
+        new htmlWebpackPlugin({
             template: path.join(__dirname, './src/index.html'), // 指定模板页面，将来就将这个页面在内存中生成一份
             filename: "index.html" //指定内存中生成的页面的名称
-        })
+        }),
+        // 创建一个解析 .vue文件的插件
+        new VueLoaderPlugin()
     ],
     module: { // 该节点用于配置所有 第三方模块加载器
         rules: [ //所有第三方模块的 匹配规则
@@ -56,7 +63,7 @@ module.exports = {
             {test: /\.less$/, use: ['style-loader', 'css-loader', 'less-loader']},
             // 3.配置处理 .scss文件的第三方loader规则
             {test: /\.scss$/, use: ['style-loader', 'css-loader', 'sass-loader']},
-            // 4.配置处理 图片路径文件的第三饭loader规则（P.S.：不需要配置file-loader，因为这是内部被依赖的）
+            // 4.配置处理 图片路径文件的第三方loader规则（P.S.：不需要配置file-loader，因为这是内部被依赖的）
             //   我们可以给loader传递命令参数，传参的格式和url传值的格式一致，如 http://XXX?id=10&name=zhangsan
             //   我们发现，使用这个之后，页面图片被默认转成了base64编码，但我们希望大图片不要转成这种编码
             //  （1）limit 给定的值是图片的大小，单位是byte，如果我们引用的图片大于或等于给定的limit值，则不会被转为base64；
@@ -64,7 +71,18 @@ module.exports = {
             //       是因为它为了让名字不重名（重名会导致后一张图片替换掉前一张图片的现象）。这时候我们希望 图片的名字
             //       具有可读性，又不会重名。可以传递name参数，name参数的组成中包括 8位hash值 + 图片原来的名字+后缀名
             {test: /\.(jpg|png|gif|bmp|jpeg)$/, use: 'url-loader?limit=251616&name=[hash:8]-[name].[ext]'},
+            //   引入bootstrap.css后会自动把字体文件也引入 ，这是也需要 url-loader这个插件进行解析
+            {test: /\.(ttf|eot|svg|woff|woff2)$/, use:'url-loader'},
+            // 配置Babel来转换高级的ES语法
+            {test:/\.js$/, use: 'babel-loader', exclude:/node_modules/},
+            // 配置处理 .vue文件的loader
+            { test:/\.vue$/, use: 'vue-loader' },
         ]
+    },
+    resolve: {
+        /*alias: { // 修改vue被导入时候的包的路径
+            "vue$": "vue/dist/vue.js" //这里的"vue$"表示当我们使用   import或 require导的包的后缀以vue结尾则修改路径
+        }*/
     }
 }
 
