@@ -7,10 +7,10 @@
 // 1.导入包 如jquery
 // es6中导入模块的格式： import 接收变量名 from 具体包名
 // 由于ES6的代码，不经过webpack处理，浏览器解析不了（会报错）
-// 下面通过命令用webpack对main.js进行处理：
+// 所以用webpack对main.js进行处理：
 //命令格式： webpack 要打包的文件的路径 -o 打包好的文件的路径
 // webpack ./webpack_learning/src/main.js -o ./webpack_learning/dist/bundle.js
-import $ from 'jquery' // 引入一个js包，我们需要用一个变量接受一下（不同于css// ）
+import $ from 'jquery' // 引入一个js包，我们需要用一个变量接收一下（不同于css// ）
 // const $ = require('jquery') // 这是node.js中引入包的写法（不经过webpack处理浏览器也解析不了）
 $(function () {
     $('li:odd').css('backgroundColor', 'lightblue') // 选择器选中li的奇数行

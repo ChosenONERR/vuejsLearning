@@ -1,7 +1,9 @@
 /* 抽离路由模块 */
-
+import Vue from 'vue'
 // 导入 vue-router
 import VueRouter from 'vue-router'
+//  手动安装 VueRouter
+Vue.use(VueRouter)
 
 // 定义组件模板文件有2种方式：
 // 方式1：本地定义组件模板
