@@ -165,7 +165,7 @@ var vm = new Vue({
     },
     // 在webpack中，如果想要通过vue把一个组件放到页面中去展示，Vue实例中的render函数可实现（components没办法实现）
     render:function (createElements) {
-        //render会把组件app【覆盖】 el指定容器，所以不要把路由的router-view 和 router-link标签写到el指定容器中
+        //render会把组件app【覆盖】 el指定容器，所以不要把路由的router-view 和 router-link标签写到el指定的容器中
         return createElements(app)
     },
     /*
