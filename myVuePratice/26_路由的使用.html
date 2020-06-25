@@ -40,7 +40,7 @@
     <router-link to="/register">注册</router-link>
     <hr>
     <!-- 如果在路由中，使用查询字符串给路由传递参数，则不需要修改路由规则对象的path属性 -->
-    <router-link to="/com1?id=10&name=xiaoming"></router-link>
+    <router-link to="/com1?id=10&name=xiaoming">测试this.query的传参方式</router-link>
     <!-- 这是Vue-router 提供的元素，专门用来当作占位符的。将来路由规则匹配成功，则组件就在 router-view 中显示  -->
     <transition mode="out-in">
         <router-view></router-view>
@@ -89,9 +89,10 @@
         // routes 数组中的每一个 route对象 表示【路由规则】
         routes: [ //注意这个属性不是routers 而是 routes
             // 路由规则对象有两个属性：
-            //属性1：path，表示监听的路由链接地址（'/'是根路径）
-            //属性2：component，表示一个组件，值必须是一个组件模板对象（不是组件的名称）。若匹配到path属性，则展示component属性对应的组件
-            {path: '/', redirect: 'login'}, // 此处的redirect 不是服务器的那种重定向，这只是一种手动修改哈希值的方式（所以值是一个字符串）
+            // 属性1：path，表示监听的路由链接地址（'/'是根路径）
+            // 属性2：component，表示一个组件，值必须是一个组件模板对象（不是组件的名称）。若匹配到path属性，则展示component属性对应的组件
+            // 属性3：redirect 不是服务器的那种重定向，这只是一种手动修改哈希值的方式（所以值是一个字符串）
+            {path: '/', redirect: 'login'},
             {path: '/login', component: login},
             {path: '/register', component: register},
             {path: '/com1', component: com1}

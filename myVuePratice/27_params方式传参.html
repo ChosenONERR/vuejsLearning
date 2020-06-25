@@ -21,8 +21,9 @@
     var com1 = {
         template: '#temp',
         created() { //组件也有生命周期钩子函数
-            //查看this.$route对象内部都包含什么。查看工作台可知该对象内部含有params这个属性，这个属性是一个对象，包含传递的参数；其中matched是解析的属性（用正则表达式）
-            //console.log(this.$route)
+            //查看this.$route对象内部都包含什么。查看工作台可知该对象内部含有params这个属性，
+            // 这个属性是一个对象，包含传递的参数；其中matched是解析的属性（用正则表达式）
+            console.log(this.$route)
             console.log(this.$route.params.id)
         }
     }

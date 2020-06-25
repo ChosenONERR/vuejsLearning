@@ -11,7 +11,7 @@
     <p v-for="(value,index) in list1">元素值：{{value}} --- 索引：{{index}}</p><hr>
 
     <p>遍历对象数组（数组内的元素是对象）,item 是元素，i是索引</p>
-    <p v-for="(item, i) in list2">用户名：{{item.name}} --- 职业：{{item.job}}</p><hr>
+    <p v-for="(item, index) in list2">用户名：{{item.name}} --- 职业：{{item.job}} --- 索引：{{index}}</p><hr>
 
     <p>遍历对象，有三个属性：value为值，key为键，index为数组下标索引</p>
     <p v-for="(value,key,index) in user">键：{{key}} --- 值：{{value}} --- 索引：{{index}}</p><hr>
@@ -38,7 +38,7 @@
             1、因为key的值是变量，所以必须使用v-bind属性绑定的形式，指定key的值
             2、key的值要唯一，且只能是number或者是string类型（且值是唯一的）
     -->
-    <p v-for="(item, i) in list2" :key="item.id">
+    <p v-for="(item, index) in list2" :key="item.id">
         <input type="checkbox">
         {{item.id}}---{{item.name}}---{{item.job}}
     </p>
