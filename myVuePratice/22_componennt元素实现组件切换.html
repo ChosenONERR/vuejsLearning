@@ -19,13 +19,14 @@
 </head>
 <body>
 <div id="app">
+<!--    注意：a标签的默认事件是跳转到href指定url，没有指定则会刷新页面，所以得用事件修饰符.prevent阻止默认事件的发生-->
 <!--    注意：要用字符串表示register和login！！！ -->
     <a href="" @click.prevent="comName='register'">注册</a>
     <a href="" @click.prevent="comName='login'">登录</a>
 
 <!--mode模式。out-in表示元素先出去再进来，不要元素还未出去，其他元素就进来-->
     <transition mode="out-in">
-        <!--    component是一个占位符，:is属性可以用来指定要展示的组件的名称-->
+        <!--    component是一个占位符，:is属性可以用来指定要展示的组件的名称（现在指定comName为:is属性）-->
         <component :is="comName"></component>
     </transition>
 </div>

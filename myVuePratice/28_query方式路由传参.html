@@ -1,5 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+query 和 params传参的区别：
+1. query更加类似于我们ajax中get传参，params则类似于post，说的再简单一点，前者在浏览器地址栏中显示参数，后者则不显示
+2. 选择 query要用path来引入，params要用name来引入，接收参数都是类似的，分别是this.$route.query.name和this.$route.params.name
+
+
+this.$router.push({
+ path:"/detail",
+ params:{
+ name:'nameValue',
+ code:10011
+ }
+});
+
+this.$router.push({
+   name:"detail",
+   params:{
+    name:'nameValue',
+    code:10011
+ }
+});
+-->
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -20,7 +42,7 @@
 </head>
 <body>
 <div id="app">
-    <!-- 如果在路由中，使用查询字符串给路由传递参数（可以传递多个），则不需要修改路由规则对象的path属性 -->
+    <!-- 如果在路由中，使用“查询字符串”给路由传递参数（可以传递多个），则不需要修改路由规则对象的path属性 -->
     <router-link to="/com1?id=10&name=xiaoming">query路由传参</router-link>
 
     <transition mode="out-in">
@@ -41,9 +63,9 @@
         template: '#temp',
         created() { //组件也有生命周期钩子函数
             //查看this.$route对象内部都包含什么。查看工作台可知该对象内部含有query这个属性，这个属性是一个对象，包含传递的参数
-            console.log(this.$route)
-            console.log(this.$route.query)
-            console.log(this.$route.query.id)
+            console.log(this.$route) // 注意接收参数的时候，已经是$route而不是$router了哦！！
+            console.log(this.$route.query) // 注意接收参数的时候，已经是$route而不是$router了哦！！
+            console.log(this.$route.query.id) // 注意接收参数的时候，已经是$route而不是$router了哦！！
         }
     }
 

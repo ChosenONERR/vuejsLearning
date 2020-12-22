@@ -19,11 +19,12 @@ import goodsList from './main/GoodsList.vue'
 // 第3步 创建路由对象
 var router = new VueRouter({
     routes:[
+        // routes数组下有命名路由对象
         {
             path:'/account',
             component:account,
             children:[
-                // 记住path不能写 /
+                // 记住path不能写 
                 { path:'login', component: login},
                 { path:'register', component: register}
             ]

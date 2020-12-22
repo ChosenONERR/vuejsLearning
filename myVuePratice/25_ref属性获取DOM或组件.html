@@ -7,8 +7,11 @@
 </head>
 <body>
 <div id="app">
+    <!-- ref为mybtn的DOM -->
     <input type="button" value="获取DOM元素 或 组件元素" @click="getElement" ref="mybtn">
+    <!-- ref为myh3的DOM -->
     <h3 id="myh3" ref="myh3">我是父组件上的元素h3</h3>
+    <!-- ref为mylogin的组件 -->
     <com1 ref="mylogin"></com1>
 </div>
 <template id="temp">
@@ -19,26 +22,24 @@
 <script>
     //定义子组件
     var com1 = {
-        template:'#temp',
-        data:function () {
-            return{
-                msg:'我是子组件的数据'
+        template: '#temp',
+        data: function () {
+            return {
+                msg: '我是子组件的数据'
             }
         },
         methods: {
-            show(){
+            show() {
                 console.log('调用了子组件的show()方法')
             }
         }
     }
     //定义Vue实例vm
     let vm = new Vue({
-        el:'#app',
-        data:{
-
-        },
-        methods:{
-            getElement(){
+        el: '#app',
+        data: {},
+        methods: {
+            getElement() {
                 // 传统获取DOM
                 console.log(document.getElementById('myh3').innerText)
                 // 通过 ref 获取DOM
@@ -50,7 +51,7 @@
                 this.$refs.mylogin.show()
             }
         },
-        components:{
+        components: {
             com1
         }
     })

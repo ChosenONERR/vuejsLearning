@@ -13,7 +13,8 @@
     <p>遍历对象数组（数组内的元素是对象）,item 是元素，i是索引</p>
     <p v-for="(item, index) in list2">用户名：{{item.name}} --- 职业：{{item.job}} --- 索引：{{index}}</p><hr>
 
-    <p>遍历对象，有三个属性：value为值，key为键，index为数组下标索引</p>
+    <p>遍历对象，有三个属性：value为值，key为键，index为对象属性下标索引</p>
+    <!--第一个参数是值，第二个参数是键，第三个参数是序号-->
     <p v-for="(value,key,index) in user">键：{{key}} --- 值：{{value}} --- 索引：{{index}}</p><hr>
 
     <p>遍历数字</p>

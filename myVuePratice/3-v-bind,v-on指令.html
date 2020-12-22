@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
 </head>
 <body>
     <div id="app">
         <!-- v-bind:是vue中提供绑定属性的指令（其实就是对标签中的属性值进行变量的绑定） -->
         <!--v-on 事件绑定，为元素指定事件处理函数的时候，如果值加了小括号，就可以给函数传参了-->
         <input type="button" value="按钮1" v-bind:title="msg">
+        <input type="button" value="按钮11" v-bind:title="false">
         <input type="button" value="按钮2" v-bind:title="msg" v-on:click="alert">
         <input type="button" value="按钮3" :title="msg" @click="alert">
         <!--v-bind在修改属性值的时候可以直接修改，不一定需要在data那里修改-->

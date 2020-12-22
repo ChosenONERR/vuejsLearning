@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="app">
-    <!-- 如果在路由中，使用查询字符串给路由传递参数（可以传递多个），则不需要修改路由规则对象的path属性 -->
+    <!-- 如果在路由中，使用“查询字符串”给路由传递参数（可以传递多个），则不需要修改路由规则对象的path属性 -->
     <router-link to="/com1/12/zhangsan">params路由传参</router-link>
 
     <router-view></router-view>
@@ -21,10 +21,10 @@
     var com1 = {
         template: '#temp',
         created() { //组件也有生命周期钩子函数
-            //查看this.$route对象内部都包含什么。查看工作台可知该对象内部含有params这个属性，
+            // 查看this.$route对象内部都包含什么。查看工作台可知该对象内部含有params这个属性，
             // 这个属性是一个对象，包含传递的参数；其中matched是解析的属性（用正则表达式）
-            console.log(this.$route)
-            console.log(this.$route.params.id)
+            console.log(this.$route) //注意接收参数的时候，已经是$route而不是$router了哦！！
+            console.log(this.$route.params.id) // 注意接收参数的时候，已经是$route而不是$router了哦！！
         }
     }
 

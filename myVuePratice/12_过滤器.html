@@ -8,22 +8,23 @@
         //2.私有（见下面第三个Vue实例）
     2.调用过滤器的格式：
         {{ data | 过滤器1, 过滤器2, ... }}
+    3.全局过滤器对所有vue实例都有效；私有过滤器只有在其锁定义的vue实例有效。私有过滤器优先级高于全局过滤器
 -->
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
 </head>
 <body>
 
     <div id="app1">
         <p>{{ msg | msgFormat('xiao', '123') | filterAgain }}</p>
     </div>
-<!--    测试全局过滤器的作用范围-->
+<!--    测试全局过滤器的作用范围（id=app2是第二个vue实例的渲染范围）-->
     <div id="app2">
         <p>{{ msg | msgFormat('xiao', '123') | filterAgain }}</p>
     </div>
-<!--    测试私有过滤器-->
+<!--    测试私有过滤器（私有过滤器的优先级比全局过滤器的优先级要高）-->
     <div id="app3">
         <p>{{ msg | msgFormat }}</p>
     </div>
@@ -69,7 +70,7 @@
         filters: {
             //定义私有过滤器（私有：仅当前Vue实例享用）
             //格式：过滤器名称:函数
-            msgFormat:function (data) { ////此处的私有过滤器 和 全局过滤器 的名字相同，但是过滤器的调用原则是：就近原则（优先私有）
+            msgFormat:function (data) { //此处的私有过滤器 和 全局过滤器 的名字相同，但是过滤器的调用原则是：就近原则（优先私有）
                 return data + '++++++++++++++++++++'
             }
         }

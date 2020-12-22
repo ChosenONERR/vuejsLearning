@@ -12,11 +12,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
 </head>
 <body>
 <div id="app">
-    <!--事件方法中若只有一天语句，那么只需要如下这样写就行了-->
+    <!--事件方法中若只有一条语句，那么只需要如下这样写就行了-->
     <input type="button" value="toggle" @click="flag=!flag">
 
     <p v-if="flag">这是v-if控制的元素</p>

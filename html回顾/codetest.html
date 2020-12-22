@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+
+
+    let user = {id:1,username:"张撒",age:30};
+    //es5：拼接字符串以获取域对象
+    //var html = "我的名字叫"+user.username+"，年龄是：" + user.age+"编号："+user.id;
+    //无需拼接字符串，自动识别域对象
+    var html = `我的名字叫${user.username}，
+    年龄是：${user.age},
+    编号：${user.id}`;
+
+    document.getElementById("app").innerHTML = html;
+    //$("#app").html(html);
+
+
+    //箭头函数
+    var print2 = obj => console.log(obj);
+    print2("print2");
+
+</script>
+
+
+</body>
+</html>

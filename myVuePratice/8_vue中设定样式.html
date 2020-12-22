@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
     <style>
         .red{
             color:red;
@@ -14,7 +14,7 @@
         .italic{
             font-style: italic;
         }
-        .acyive{
+        .active{
             letter-spacing: 0.5em;
         }
     </style>
@@ -25,15 +25,15 @@
         <h1 class="red thin">hello，vue.js</h1>
         <p>数组写法</p>
         <h1 :class="['red','italic']">hello，vue.js</h1>
-        <p>数组中使用三元表达式</p>
+        <p>数组中使用三元表达式</p><!-- 三元表达式写法 -->
         <h1 :class="['red','italic','flag'?'active':'']">hello，vue.js</h1>
         <p>三元表达式用js对象代替</p>
-        <h1 :class="['red','italic',{'red':flag}]">hello，vue.js</h1>
+        <h1 :class="['red','italic',{'thin':flag}]">hello，vue.js</h1>
         <p>全部使用js对象</p>
         <h1 :class="obj">hello，vue.js</h1>
     </div>
     <!--几点需要注意：
-    1.class属性需要被v-bind指令修饰
+    1.当选择使用非传统写法的时候，class属性需要被v-bind指令修饰
     2.在为class使用v-bind绑定对象的时候，对象的属性是类名，由于对象的属性可带引号，也可不带引号，
       所以这里我没写引号（如果属性包括一个横线-，那么就一定要加单引号，如'font-weight'）； 属性的值是一个标识符（布尔类型）
     -->

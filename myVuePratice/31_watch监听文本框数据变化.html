@@ -24,7 +24,8 @@
         methods:{
 
         },
-        watch:{ // 使用这个属性，可以监视 data 中指定数据的变化，然后触发这个watch中data对应的函数
+        watch:{ // 监听数据必须是data中声明过或者父组件传递过来的props中的数据，数据变化就会触发这个watch中data对应的函数
+            // P.s：深度监听deep 和 immediate组件加载立即触发回调函数执行
             // 这里的数据如果是first-name，则要写成'first-name':function(){}
             firstName:function (newVal, oldVal) { // 两个特殊参数，顾名思义
                 this.fullName = newVal + '-' +  this.lastName

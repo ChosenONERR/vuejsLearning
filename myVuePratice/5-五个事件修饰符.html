@@ -7,11 +7,15 @@
     事件修饰符
     .stop:阻止冒泡（所谓冒泡：“一层一层地往外冒泡”，假如外层元素和内层元素都有相同的触发事件，此时先触发内部，再触发外部。而倘若在内部元素使用了stop可以阻止外层的事件的触发）
     .prevent:阻止默认事件
+        p.s：在html中，基本上所有的事件都有一个默认行为，如：
+                1. Submit按钮: 在form表单中的,提交form表单中的数据到服务器
+                2. Button: 在PC中不做任何事情, 在手机浏览器中, 若是在form中,则是submit
+                3. a标签: 默认将当前页面跳转为a标签中href的地址
     .capture:添加事件侦听器时使用事件捕获模式（和冒泡相反，若外部元素使用了.capture，则先触发外部元素）
     .self:只当事件在该元素本身触发时触发回调（当前元素的事件的触发只能由当前元素触发，不能被动触发（不允许冒泡））
     .once:事件只能触发一次
     -->
-    <script src="../vue-cms/node_modules/vue/dist/vue.js"></script>
+    <script src="../node_modules/vue/dist/vue.js"></script>
 
     <style>
         .inner{
